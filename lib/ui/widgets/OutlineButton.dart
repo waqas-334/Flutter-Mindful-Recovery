@@ -5,28 +5,36 @@ import '../const/Constants.dart';
 class MyOutlineButton extends StatelessWidget {
   final String label;
   final GestureTapCallback onButtonClick;
+  Color colors;
+  double radius;
+  double horizontalMargin;
 
-  const MyOutlineButton(
-      {super.key, required this.label, required this.onButtonClick});
+  MyOutlineButton(
+      {super.key,
+      required this.label,
+      required this.onButtonClick,
+      this.colors = Colors.white,
+      this.horizontalMargin = 40.0,
+      this.radius = kButtonCornerRadius});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onButtonClick,
       child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(horizontal: 40),
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(horizontal: horizontalMargin),
         padding: const EdgeInsets.symmetric(vertical: 18),
         decoration: BoxDecoration(
           // shape: BoxShape.rectangle,
-          border: Border.all(color: Colors.white, width: kButtonStrokeWidth),
-          borderRadius: BorderRadius.circular(kButtonCornerRadius),
+          border: Border.all(color: colors, width: kButtonStrokeWidth),
+          borderRadius: BorderRadius.circular(radius),
           // border: Border.all(color: Colors.black),
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: colors, fontWeight: FontWeight.bold),
         ),
       ),
     );

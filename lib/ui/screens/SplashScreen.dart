@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
+import 'package:flutter_mindful_recovery/ui/screens/MainScreen.dart';
 import 'package:flutter_mindful_recovery/ui/screens/PrivacyPolicyScreen.dart';
 
 import '../widgets/OutlineButton.dart';
@@ -64,7 +64,9 @@ class SplashScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   MyOutlineButton(
                     label: "Lets Go",
-                    onButtonClick: () {},
+                    onButtonClick: () {
+                      letsGoClicked(context);
+                    },
                   ),
                 ],
               ),
@@ -77,7 +79,12 @@ class SplashScreen extends StatelessWidget {
 
   void launchUrl(context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => MyWebView()));
+        .push(MaterialPageRoute(builder: (context) => const MyWebView()));
+  }
+
+  void letsGoClicked(context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
 //
