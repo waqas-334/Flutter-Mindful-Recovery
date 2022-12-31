@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
+import 'package:flutter_mindful_recovery/ui/data/Record.dart';
 import 'package:flutter_mindful_recovery/ui/screens/WakeUpScreen.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/appbar%20content/AppBarConstants.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,9 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
   Widget build(BuildContext context) {
     final formatter = DateFormat('d MMM y');
     final date = formatter.format(dateTime);
+
+    final args = ModalRoute.of(context)!.settings.arguments as Record;
+    print("ARGUEMENT GOT: ${args.id}");
 
     Widget timeText = const Text("Time");
     Widget dateText = const Text("Date");
@@ -118,7 +122,7 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
 
   void onContinueClicked(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) =>  WakeUpScreen()));
+        .push(MaterialPageRoute(builder: (context) => WakeUpScreen()));
   }
 
   void onTimeClicked(BuildContext context) {

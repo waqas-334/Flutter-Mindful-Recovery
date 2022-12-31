@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
+import 'package:flutter_mindful_recovery/ui/screens/8.%20DrinkScreen.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/container/MainContainer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -98,7 +99,7 @@ class _EatenState extends State<Eaten> {
   }
 
   void _continueClicked() {
-    if (isEaten==null || isAbstinentMeal == null){
+    if (isEaten == null || isAbstinentMeal == null) {
       Fluttertoast.showToast(
         msg: "Please answer all questions",
         toastLength: Toast.LENGTH_SHORT,
@@ -106,5 +107,8 @@ class _EatenState extends State<Eaten> {
       );
       return;
     }
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => DrinkScreen()));
   }
 }
