@@ -1,16 +1,19 @@
-# flutter_mindful_recovery
+#Changes Delivery 2
+X button is not taking to blank screen, can you please tell me from which screen you tapped the X button which lead to the blank screen.
 
-A new Flutter project.
+The navigation supports backward data persistence only. That's almost how all apps work out there. Still if you want me to make to forward persistence too, I will do it even though it is a little complex to do.
 
-## Getting Started
+The notification is creating problems while running on real device. Actually the OS (Android and iOS) set's limit on how many notification an app can schedule at once.
+No matter how many 
 
-This project is a starting point for a Flutter application.
+1. Fixed the App's tagline to "Self Care Check Check-In"
+2. Fixed in "Self Care Check In" punctuation.
+3. Removed "Was it an abstinent meal?" from Thirst Page.
+4. Increased questions font Size,
+5. The Bathroom beak page will only show "More info" if user clicks "Yes"
+6. Fixed Privacy Policy
+7. Fixed About Us URL
+8. Skip button in both screens fixed
+9. Typo "What do I really wnat?" fixed
+10. What am I physically feeling right now? (choose all that apply): Options updated
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

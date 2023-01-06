@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
 import 'package:flutter_mindful_recovery/ui/screens/MainScreen.dart';
 import 'package:flutter_mindful_recovery/ui/screens/PrivacyPolicyScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/OutlineButton.dart';
 
@@ -10,6 +11,8 @@ final Uri _privacy_policy = Uri.parse(kPrivacyPolicyUrl);
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class SplashScreen extends StatelessWidget {
           height: 10,
         ),
         const Text(
-          "Think before you eat",
+          "Self Care Check Check In.",
           style: TextStyle(color: Colors.white),
         ),
       ],
@@ -79,12 +82,15 @@ class SplashScreen extends StatelessWidget {
 
   void launchUrl(context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const MyWebView()));
+        .push(MaterialPageRoute(builder: (context) =>  MyWebView(kPrivacyPolicyUrl)));
   }
 
-  void letsGoClicked(context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const MainScreen()));
+  void letsGoClicked(context) async {
+    Navigator.pushReplacementNamed(context, "/main");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("newLaunch", false);
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
 //

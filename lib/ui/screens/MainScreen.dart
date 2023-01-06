@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mindful_recovery/ui/screens/TimeAndDateScreen.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_mindful_recovery/ui/screens/1.1.2%20ViewDataSelectionScreen.dart';
+import 'package:flutter_mindful_recovery/ui/screens/1.2%20SettingsScreen.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/OutlineButton.dart';
 
 import '../const/Constants.dart';
+import '../data/Record.dart';
 import '../widgets/FilledRoundCornerButton.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  MainScreen({Key? key}) : super(key: key);
+  static String routeName = "/main";
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  Record record = Record();
+
+  // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  @override
+  void initState() {
+    // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +54,7 @@ class MainScreen extends StatelessWidget {
     );
 
     Widget btnProceedWithSelfCheckIn = MyFilledRoundCornerButton(
-      label: 'Self Care check in',
+      label: 'Self Care Check In',
       onButtonClick: () {
         onProceedSelfCareClicked(context);
       },
@@ -84,14 +102,61 @@ class MainScreen extends StatelessWidget {
     ));
   }
 
-  void onSettingsClicked(context) {}
-
-  void onProceedSelfCareClicked(BuildContext context) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const TimeAndDateScreen()));
+  void onSettingsClicked(context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => SettingsScreen()));
   }
 
-  void onViewDataClicked(BuildContext context) {}
+  void onProceedSelfCareClicked(BuildContext context) {
+    // var route = MaterialPageRoute(builder: (context) => const TimeAndDateScreen());
+    Navigator.pushNamed(context, "/first", arguments: record);
+    // Navigator.of(context).push(
+    //     MaterialPageRoute(builder: (context) => const TimeAndDateScreen()));
+  }
 
-  void onExportDataClicked(BuildContext context) {}
+  void onViewDataClicked(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ViewDataSelectionScreen(false)));
+
+    // var notificationDetails = const NotificationDetails(
+    //   android: AndroidNotificationDetails(
+    //       'daily notification channel id', 'daily notification channel name',
+    //       channelDescription: 'daily notification description'),
+    // );
+    // for (int i = 0; i < 20; i++) {
+      flutterLocalNotificationsPlugin.periodicallyShow(
+          123, "title", "body", RepeatInterval.hourly, notificationDetails);
+    //   flutterLocalNotificationsPlugin.zonedSchedule(
+    //       Random().nextInt(100),
+    //       "Mindful Recovery",
+    //       "Time to add you data",
+    //       _nextInstanceOfTenAM(),
+    //       notificationDetails,
+    //       uiLocalNotificationDateInterpretation:
+    //           UILocalNotificationDateInterpretation.absoluteTime,
+    //       androidAllowWhileIdle: true,
+    //       matchDateTimeComponents: DateTimeComponents.time);
+    // }
+  }
+
+  //
+  // var secondsToAdd = 0;
+  //
+  // tz.TZDateTime _nextInstanceOfTenAM() {
+  //   secondsToAdd += 2;
+  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+  //   tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,
+  //       now.day, now.hour, now.minute, now.second + secondsToAdd);
+  //   // if (scheduledDate.isBefore(now)) {
+  //   //   print("SCHEDULE DATE IS IN PASTE");
+  //   //   scheduledDate = scheduledDate.add(const Duration(days: 1));
+  //   // }
+  //   print("NOTIFICATION SCHEDULED AT: $scheduledDate");
+  //   return scheduledDate;
+  // }
+
+  void onExportDataClicked(BuildContext context) {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ViewDataSelectionScreen(true)));
+  }
 }

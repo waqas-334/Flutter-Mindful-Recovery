@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
+import 'package:flutter_mindful_recovery/ui/data/Record.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/container/MainContainer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sqflite/sqflite.dart';
 
+import '../util/DB.dart';
+import '../util/Extensions.dart';
 import '../widgets/FilledRoundCornerButton.dart';
-import '7. Eaten.dart';
+import '7. EatenScreen.dart';
 
 enum YesOrNo { YES, NO }
 
 class PhysicalHunger extends StatefulWidget {
-  const PhysicalHunger({Key? key}) : super(key: key);
+  Record? record;
+
+  PhysicalHunger(this.record, {Key? key}) : super(key: key);
 
   @override
   State<PhysicalHunger> createState() => _PhysicalHungerState();
@@ -23,10 +29,27 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
   }
 
   late String selectedValue;
+  // Database? database;
 
   @override
   void initState() {
+    super.initState();
     selectedValue = _options[0];
+    // getDatabase().then((value) {
+    //   database = value;
+    //   print("RETRIVED DATABASE");
+    // });
+  }
+
+  Future<Database> getDatabase() async {
+    var database = await openDatabase(
+      DATABASE_NAME,
+      onCreate: (db, version) {
+        db.execute(DATABASE_INITIAL_QUERY);
+      },
+      version: DATABASE_VERSION,
+    );
+    return database;
   }
 
   @override
@@ -36,7 +59,7 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
       kSizedBox10,
       kSizedBox10,
       kSizedBox10,
-      Text("Am I experiencing any Physical Hunger?"),
+      Text("Am I experiencing any Physical Hunger?", style: kQuestionTextStyle),
       kSizedBox10,
       kSizedBox10,
       ListTile(
@@ -91,10 +114,13 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
           ),
         ),
       Spacer(),
-      MyFilledRoundCornerButton(
-        label: "Continue",
-        onButtonClick: _continueClicked,
-        horizontalPadding: 0.0,
+      GestureDetector(
+        onLongPress: _onLongPressed,
+        child: MyFilledRoundCornerButton(
+          label: "Continue",
+          onButtonClick: _continueClicked,
+          horizontalPadding: 0.0,
+        ),
       ),
     ]);
   }
@@ -106,7 +132,15 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
     });
   }
 
-  void _continueClicked() {
+  void _onLongPressed() async {
+    final database = await openDatabase(DATABASE_NAME);
+    for (var element in dummy_data) {
+      var key = await database.insert(TABLE_NAME, element.toMap());
+      print("INSERT ROW: $key");
+    }
+  }
+
+  void _continueClicked() async {
     if (isPhysicalHungary == null) {
       Fluttertoast.showToast(
         msg: "Please select one option",
@@ -115,7 +149,26 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
       );
       return;
     }
+
+
+    widget.record?.is_physical_hunger = isPhysicalHungary?.toShortString();
+    widget.record?.is_physical_hunger_option = selectedValue;
+
+    //
+    // database ??= await getDatabase();
+    //
+    // print("DATABASE IS OPEN: ${database?.isOpen}");
+
+    // int result = await database?.insert(
+    //       TABLE_NAME,
+    //       widget.record!.toMap(),
+    //       conflictAlgorithm: ConflictAlgorithm.replace,
+    //     ) ??
+    //     -1;
+
+    // print("INSERTION INT: $result");
+
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Eaten()));
+        .push(MaterialPageRoute(builder: (context) => EatenScreen(widget.record)));
   }
 }

@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jayden.mindful.recovery.flutter_mindful_recovery">
    <application
-        android:label="flutter_mindful_recovery"
+        android:label="Mindful Recovery"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

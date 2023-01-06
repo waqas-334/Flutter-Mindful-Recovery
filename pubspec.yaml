@@ -37,8 +37,20 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.6
   webview_flutter: ^3.0.4
-  intl: ^0.18.0
+  intl: ^0.17.0
   fluttertoast: ^8.1.2
+  shared_preferences: ^2.0.15
+  csv: ^5.0.1
+  sqflite: ^2.2.2
+  sqlite_viewer: ^1.0.5
+  pluto_grid: ^5.4.9
+  pluto_grid_export: ^1.0.3
+  file_saver: ^0.1.1
+  path_provider: ^2.0.11
+  flutter_launcher_icons: ^0.11.0
+  flutter_local_notifications: ^13.0.0
+  flutter_timezone: ^1.0.4
+
 #  url_launcher: ^6.1.7
 
 dev_dependencies:
@@ -66,6 +78,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/
+     - icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

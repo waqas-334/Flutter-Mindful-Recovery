@@ -4,15 +4,20 @@ import 'package:flutter_mindful_recovery/ui/screens/8.%20DrinkScreen.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/container/MainContainer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../data/Record.dart';
 import '../widgets/FilledRoundCornerButton.dart';
 import '6. Physical Hunger Screen.dart';
+import '../util/Extensions.dart';
+class EatenScreen extends StatefulWidget {
+  Record? record;
 
-class Eaten extends StatefulWidget {
+  EatenScreen(this.record, {super.key});
+
   @override
-  State<Eaten> createState() => _EatenState();
+  State<EatenScreen> createState() => _EatenScreenState();
 }
 
-class _EatenState extends State<Eaten> {
+class _EatenScreenState extends State<EatenScreen> {
   YesOrNo? isEaten = null;
   YesOrNo? isAbstinentMeal = null;
 
@@ -23,7 +28,7 @@ class _EatenState extends State<Eaten> {
       kSizedBox10,
       kSizedBox10,
       kSizedBox10,
-      Text("Have I eaten?"),
+      Text("Have I eaten?", style: kQuestionTextStyle),
       kSizedBox10,
       kSizedBox10,
       ListTile(
@@ -50,7 +55,7 @@ class _EatenState extends State<Eaten> {
       ),
       kSizedBox10,
       kSizedBox10,
-      Text("Was it an abstinent meal?"),
+      Text("Was it an abstinent meal?", style: kQuestionTextStyle),
       kSizedBox10,
       kSizedBox10,
       ListTile(
@@ -108,7 +113,11 @@ class _EatenState extends State<Eaten> {
       return;
     }
 
+    widget.record?.have_I_eaten = isEaten?.toShortString();
+    widget.record?.eaten_was_it_abstinent = isAbstinentMeal?.toShortString();
+
+
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => DrinkScreen()));
+        .push(MaterialPageRoute(builder: (context) => DrinkScreen(widget.record)));
   }
 }

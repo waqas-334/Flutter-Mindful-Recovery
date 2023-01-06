@@ -53,7 +53,8 @@ class CancelButton extends StatelessWidget {
                       MyFilledRoundCornerButton(
                         label: 'Yes',
                         onButtonClick: () {
-                          //TODO HANDLE WHEN JOURNEY IS CANCELLED
+                          Navigator.popUntil(
+                              context, ModalRoute.withName("/main"));
                         },
                       )
                     ],

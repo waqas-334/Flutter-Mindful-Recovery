@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
 import 'package:flutter_mindful_recovery/ui/data/Record.dart';
-import 'package:flutter_mindful_recovery/ui/screens/WakeUpScreen.dart';
+import 'package:flutter_mindful_recovery/ui/screens/3. WakeUpScreen.dart';
+import 'package:flutter_mindful_recovery/ui/util/MyTimeOfDay.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/appbar%20content/AppBarConstants.dart';
 import 'package:intl/intl.dart';
 
@@ -25,16 +26,17 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
     dateTime = DateTime.now();
   }
 
+  Record? record;
+
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat('d MMM y');
     final date = formatter.format(dateTime);
 
-    final args = ModalRoute.of(context)!.settings.arguments as Record;
-    print("ARGUEMENT GOT: ${args.id}");
+    record = ModalRoute.of(context)!.settings.arguments as Record;
 
-    Widget timeText = const Text("Time");
-    Widget dateText = const Text("Date");
+    Widget timeText =  const Text("Time", style: kQuestionTextStyle,);
+    Widget dateText =  const Text("Date", style: kQuestionTextStyle,);
     Widget timePicker = InkWell(
       onTap: () {
         onTimeClicked(context);
@@ -121,30 +123,22 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
   }
 
   void onContinueClicked(BuildContext context) {
+    record?.time = MyTimeOfDay.fromTimeOfDay(timeOfDay);
+    record?.date = dateTime;
+
+    print(record);
+
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => WakeUpScreen()));
+        .push(MaterialPageRoute(builder: (context) => WakeUpScreen(record)));
   }
 
   void onTimeClicked(BuildContext context) {
     showTimePicker(context: context, initialTime: timeOfDay).then(
       (value) {
         setState(() {
-          // if (value == null) {
-          //   Fluttertoast.showToast(
-          //       msg: "Something went wrong, please try again later",
-          //       toastLength: Toast.LENGTH_SHORT,
-          //       gravity: ToastGravity.CENTER,
-          //       timeInSecForIosWeb: 1,
-          //       backgroundColor: Colors.red,
-          //       textColor: Colors.white,
-          //       fontSize: 16.0);
-          // } else {
-          //   {
           if (value != null) {
             timeOfDay = value;
           }
-          // }
-          // }
         });
       },
     );
@@ -157,17 +151,6 @@ class _TimeAndDateScreenState extends State<TimeAndDateScreen> {
             firstDate: DateUtils.addDaysToDate(dateTime, -30),
             lastDate: DateUtils.addDaysToDate(dateTime, 30))
         .then((value) {
-      // if (value == null) {
-      //   Fluttertoast.showToast(
-      //       msg: "Something went wrong, please try again later",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.CENTER,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      // } else {
-      //   {
       if (value != null) {
         setState(() {
           dateTime = value;

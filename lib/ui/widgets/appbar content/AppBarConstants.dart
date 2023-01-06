@@ -10,3 +10,10 @@ Widget kAppBar = Row(
     kCancelButton,
   ],
 );
+
+Widget kAppBarWithJustBackButton = Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: const [
+    kBackButton,
+  ],
+);

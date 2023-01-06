@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mindful_recovery/ui/data/Record.dart';
 import 'package:flutter_mindful_recovery/ui/screens/4.%20LightsOutScreen.dart';
+import 'package:flutter_mindful_recovery/ui/screens/5.%20ActivityScreen.dart';
+import 'package:flutter_mindful_recovery/ui/util/Extensions.dart';
+import 'package:flutter_mindful_recovery/ui/util/MyTimeOfDay.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/OutlineButton.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/container/MainContainer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../const/Constants.dart';
+import '../util/DB.dart';
 import '../widgets/FilledRoundCornerButton.dart';
 
 class WakeUpScreen extends StatefulWidget {
+  Record? record;
+
+  WakeUpScreen(this.record, {super.key});
+
   @override
   State<WakeUpScreen> createState() => _WakeUpScreenState();
 }
@@ -16,13 +27,15 @@ enum QualityOfSleep { Great, Poor }
 class _WakeUpScreenState extends State<WakeUpScreen> {
   late TimeOfDay timeOfDay;
 
-  QualityOfSleep _quality_of_sleep = QualityOfSleep.Great;
+  QualityOfSleep? _quality_of_sleep = null;
 
   @override
   void initState() {
     // super.initState();
     timeOfDay = TimeOfDay.now();
   }
+
+  final myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +46,7 @@ class _WakeUpScreenState extends State<WakeUpScreen> {
         kSizedBox10,
         kSizedBox10,
         kSizedBox10,
-        Text("What time did I wake up?"),
+        const Text("What time did I wake up?", style: kQuestionTextStyle,),
         kSizedBox10,
         kSizedBox10,
         InkWell(
@@ -51,7 +64,7 @@ class _WakeUpScreenState extends State<WakeUpScreen> {
         kSizedBox10,
         kSizedBox10,
         kSizedBox10,
-        Text("What was the quality of the sleep?"),
+        const Text("What was the quality of the sleep?", style: kQuestionTextStyle,),
         kSizedBox10,
         kSizedBox10,
         ListTile(
@@ -78,16 +91,18 @@ class _WakeUpScreenState extends State<WakeUpScreen> {
         ),
         kSizedBox10,
         kSizedBox10,
-        Text("Comments"),
+        const Text("Comments", style: kQuestionTextStyle,),
         kSizedBox10,
-        const TextField(
-          maxLines: 10,
-          decoration: InputDecoration(
+        TextField(
+          maxLines: 5,
+          controller: myController,
+          decoration: const InputDecoration(
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8)))),
         ),
         kSizedBox10,
         kSizedBox10,
+        Spacer(),
         Row(
           children: [
             // MyFilledRoundCornerButton(label: "Contine", onButtonClick: () {}),
@@ -133,10 +148,29 @@ class _WakeUpScreenState extends State<WakeUpScreen> {
     });
   }
 
-  void _skipClicked() {}
+  void _skipClicked() {
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ActivityScreen(widget.record)));
+  }
 
   void _continueClicked() {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const LightsOutScreen()));
+
+    if(_quality_of_sleep==null){
+      Fluttertoast.showToast(
+        msg: "Please select one option",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    widget.record?.wake_up_time = MyTimeOfDay.fromTimeOfDay(timeOfDay);
+    widget.record?.quality_of_sleep = _quality_of_sleep?.toShortString();
+    widget.record?.sleep_comment = myController.text;
+
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => LightsOutScreen(widget.record)));
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
+import 'package:flutter_mindful_recovery/ui/data/Record.dart';
 import 'package:flutter_mindful_recovery/ui/screens/6.%20Physical%20Hunger%20Screen.dart';
+import 'package:flutter_mindful_recovery/ui/util/Extensions.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/container/MainContainer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/FilledRoundCornerButton.dart';
 
@@ -13,6 +16,10 @@ class FilterChipOption {
 }
 
 class ActivityScreen extends StatefulWidget {
+  Record? record;
+
+  ActivityScreen(this.record);
+
   @override
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
@@ -73,7 +80,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       kSizedBox10,
       kSizedBox10,
       kSizedBox10,
-      Text("What I am doing right now? (Choose all that apply)"),
+      const Text("What I am doing right now? (Choose all that apply)", style: kQuestionTextStyle),
       kSizedBox10,
       kSizedBox10,
       Container(
@@ -93,7 +100,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       ),
       kSizedBox10,
       kSizedBox10,
-      Text("Comments"),
+      const Text(style: kQuestionTextStyle, "Comments"),
       kSizedBox10,
       TextField(
         controller: myController,
@@ -112,14 +119,27 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   void _continueClicked() {
     List<String> selectedOptions = [];
-    options.forEach((element) {
+    for (var element in options) {
       if (element.isSelected) {
         selectedOptions.add(element.label);
       }
-    });
-    print("SELECTED OPTIONS: $selectedOptions");
+    }
+
+    if(selectedOptions.isEmpty){
+      Fluttertoast.showToast(
+        msg: "Please select one option",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    widget.record?.what_I_am_doing_right_now = selectedOptions.toShortString();
+    widget.record?.what_I_am_doing_right_now_comment = myController.text;
+
+    print("SELECTED OPTIONS: ${selectedOptions.toShortString()}");
     print("COMMENT: , ${myController.text}");
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => PhysicalHunger()));
+        .push(MaterialPageRoute(builder: (context) => PhysicalHunger(widget.record)));
   }
 }

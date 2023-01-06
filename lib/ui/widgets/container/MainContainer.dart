@@ -4,8 +4,10 @@ import '../appbar content/AppBarConstants.dart';
 
 class MainContainer extends StatelessWidget {
   List<Widget> children;
+  Widget? appBar;
+  double? padding;
 
-  MainContainer({required this.children, super.key});
+  MainContainer({required this.children, super.key, this.appBar, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class MainContainer extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(padding??16.0),
           child: SingleChildScrollView(
             reverse: true,
             child: SizedBox(
@@ -28,7 +30,8 @@ class MainContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    kAppBar,
+                    appBar ?? kAppBar,
+                    // appBar == null?kAppBar,
                     ...children,
                   ],
                 ),
