@@ -10,6 +10,7 @@ import '../widgets/FilledRoundCornerButton.dart';
 
 class TimeAndDateScreen extends StatefulWidget {
   const TimeAndDateScreen({Key? key}) : super(key: key);
+  static String routeName = "/first";
 
   @override
   State<TimeAndDateScreen> createState() => _TimeAndDateScreenState();

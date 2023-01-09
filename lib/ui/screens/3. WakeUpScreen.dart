@@ -12,6 +12,7 @@ import 'package:sqflite/sqflite.dart';
 import '../const/Constants.dart';
 import '../util/DB.dart';
 import '../widgets/FilledRoundCornerButton.dart';
+import 'MainScreen.dart';
 
 class WakeUpScreen extends StatefulWidget {
   Record? record;
@@ -155,6 +156,9 @@ class _WakeUpScreenState extends State<WakeUpScreen> {
   }
 
   void _continueClicked() {
+    Navigator.popUntil(context, ModalRoute.withName(MainScreen.routeName));
+
+    return;
 
     if(_quality_of_sleep==null){
       Fluttertoast.showToast(
@@ -170,7 +174,9 @@ class _WakeUpScreenState extends State<WakeUpScreen> {
     widget.record?.sleep_comment = myController.text;
 
 
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LightsOutScreen(widget.record)));
+
+
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => LightsOutScreen(widget.record)));
   }
 }

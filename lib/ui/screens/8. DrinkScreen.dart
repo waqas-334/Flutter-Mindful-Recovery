@@ -55,31 +55,31 @@ class _DrinkScreenState extends State<DrinkScreen> {
       ),
       kSizedBox10,
       kSizedBox10,
-      const Text("Was it an abstinent meal?", style: kQuestionTextStyle),
-      kSizedBox10,
-      kSizedBox10,
-      ListTile(
-        onTap: () {
-          onRadioChanged2(YesOrNo.YES);
-        },
-        title: Text("Yes"),
-        leading: Radio(
-          value: YesOrNo.YES,
-          groupValue: isDrinkingNow,
-          onChanged: onRadioChanged2,
-        ),
-      ),
-      ListTile(
-        onTap: () {
-          onRadioChanged2(YesOrNo.NO);
-        },
-        title: Text("No"),
-        leading: Radio(
-          value: YesOrNo.NO,
-          groupValue: isDrinkingNow,
-          onChanged: onRadioChanged2,
-        ),
-      ),
+      // const Text("Was it an abstinent meal?", style: kQuestionTextStyle),
+      // kSizedBox10,
+      // kSizedBox10,
+      // ListTile(
+      //   onTap: () {
+      //     onRadioChanged2(YesOrNo.YES);
+      //   },
+      //   title: Text("Yes"),
+      //   leading: Radio(
+      //     value: YesOrNo.YES,
+      //     groupValue: isDrinkingNow,
+      //     onChanged: onRadioChanged2,
+      //   ),
+      // ),
+      // ListTile(
+      //   onTap: () {
+      //     onRadioChanged2(YesOrNo.NO);
+      //   },
+      //   title: Text("No"),
+      //   leading: Radio(
+      //     value: YesOrNo.NO,
+      //     groupValue: isDrinkingNow,
+      //     onChanged: onRadioChanged2,
+      //   ),
+      // ),
       Spacer(),
       MyFilledRoundCornerButton(
         label: "Continue",
@@ -105,7 +105,7 @@ class _DrinkScreenState extends State<DrinkScreen> {
   }
 
   void _continueClicked() {
-    if (isWaterOrTea == null || isDrinkingNow == null) {
+    if (isWaterOrTea == null) {
       Fluttertoast.showToast(
         msg: "Please answer all questions",
         toastLength: Toast.LENGTH_SHORT,
@@ -115,7 +115,7 @@ class _DrinkScreenState extends State<DrinkScreen> {
     }
 
     widget.record?.have_I_consumed_any_water_or_tea = isWaterOrTea?.toShortString();
-    widget.record?.drink_was_it_abstinent = isDrinkingNow?.toShortString();
+    // widget.record?.drink_was_it_abstinent = isDrinkingNow?.toShortString();
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) =>  FeelingScreen(widget.record)));

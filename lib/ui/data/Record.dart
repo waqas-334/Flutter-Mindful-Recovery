@@ -74,7 +74,7 @@ class Record {
   String? eaten_was_it_abstinent;
 
   String? have_I_consumed_any_water_or_tea;
-  String? drink_was_it_abstinent;
+  // String? drink_was_it_abstinent;
 
   String? what_I_am_feeling_rn;
   String? what_I_am_feeling_rn_other;
@@ -117,7 +117,7 @@ class Record {
     this.have_I_eaten,
     this.eaten_was_it_abstinent,
     this.have_I_consumed_any_water_or_tea,
-    this.drink_was_it_abstinent,
+    // this.drink_was_it_abstinent,
     this.what_I_am_feeling_rn,
     this.what_I_am_feeling_rn_other,
     this.food_craving,

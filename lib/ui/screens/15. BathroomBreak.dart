@@ -109,7 +109,12 @@ class _BathRoomBreakState extends State<BathRoomBreak> {
   }
 
   void _continueClicked() {
-    if (hadBathroomBreak == null || moreInfo == null) {
+    if (hadBathroomBreak == null) {
+      showErrorToast();
+      return;
+    }
+
+    if(hadBathroomBreak==YesOrNo.YES && moreInfo==null){
       showErrorToast();
       return;
     }

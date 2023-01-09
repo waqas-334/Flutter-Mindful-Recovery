@@ -9,10 +9,32 @@ import '../widgets/OutlineButton.dart';
 
 final Uri _privacy_policy = Uri.parse(kPrivacyPolicyUrl);
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
 
+class _SplashScreenState extends State<SplashScreen> {
+  bool? newLaunch;
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    loadNewLaunch();
+  }
+
+  loadNewLaunch() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      bool _newLaunch = ((prefs.getBool('newLaunch') ?? true));
+      newLaunch = _newLaunch;
+      if(newLaunch==false){
+        goToMainActivity(context);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,22 +103,19 @@ class SplashScreen extends StatelessWidget {
   }
 
   void launchUrl(context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) =>  MyWebView(kPrivacyPolicyUrl)));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => MyWebView(kPrivacyPolicyUrl)));
   }
 
   void letsGoClicked(context) async {
-    Navigator.pushReplacementNamed(context, "/main");
+    goToMainActivity(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("newLaunch", false);
     // Navigator.of(context)
     //     .push(MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
-//
-// Future<void> _launchUrl() async {
-//   if (!await launchUrl(_privacy_policy, mode: LaunchMode.inAppWebView)) {
-//     throw 'Could not launch $_privacy_policy';
-//   }
-// }
+  void goToMainActivity(context) {
+    Navigator.pushReplacementNamed(context, MainScreen.routeName);
+  }
 }

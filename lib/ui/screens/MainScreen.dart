@@ -1,15 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_mindful_recovery/ui/screens/1.1.2%20ViewDataSelectionScreen.dart';
 import 'package:flutter_mindful_recovery/ui/screens/1.2%20SettingsScreen.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/OutlineButton.dart';
 
+import '../../main.dart';
 import '../const/Constants.dart';
 import '../data/Record.dart';
 import '../widgets/FilledRoundCornerButton.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import '2. TimeAndDateScreen.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
   static String routeName = "/main";
 
   @override
@@ -109,51 +115,41 @@ class _MainScreenState extends State<MainScreen> {
 
   void onProceedSelfCareClicked(BuildContext context) {
     // var route = MaterialPageRoute(builder: (context) => const TimeAndDateScreen());
-    Navigator.pushNamed(context, "/first", arguments: record);
+    Navigator.pushNamed(context, TimeAndDateScreen.routeName, arguments: record);
     // Navigator.of(context).push(
     //     MaterialPageRoute(builder: (context) => const TimeAndDateScreen()));
   }
 
   void onViewDataClicked(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ViewDataSelectionScreen(false)));
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => ViewDataSelectionScreen(false)));
 
-    // var notificationDetails = const NotificationDetails(
-    //   android: AndroidNotificationDetails(
-    //       'daily notification channel id', 'daily notification channel name',
-    //       channelDescription: 'daily notification description'),
-    // );
-    // for (int i = 0; i < 20; i++) {
-      flutterLocalNotificationsPlugin.periodicallyShow(
-          123, "title", "body", RepeatInterval.hourly, notificationDetails);
-    //   flutterLocalNotificationsPlugin.zonedSchedule(
-    //       Random().nextInt(100),
-    //       "Mindful Recovery",
-    //       "Time to add you data",
-    //       _nextInstanceOfTenAM(),
-    //       notificationDetails,
-    //       uiLocalNotificationDateInterpretation:
-    //           UILocalNotificationDateInterpretation.absoluteTime,
-    //       androidAllowWhileIdle: true,
-    //       matchDateTimeComponents: DateTimeComponents.time);
-    // }
+    var notificationDetails = const NotificationDetails(
+      android: AndroidNotificationDetails(
+          'daily notification channel id', 'daily notification channel name',
+          channelDescription: 'daily notification description'),
+    );
+
+    flutterLocalNotificationsPlugin.periodicallyShow(
+        123, "30 Sec Notification", "body", RepeatInterval.every10Minues, notificationDetails);
+
   }
 
-  //
-  // var secondsToAdd = 0;
-  //
-  // tz.TZDateTime _nextInstanceOfTenAM() {
-  //   secondsToAdd += 2;
-  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-  //   tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,
-  //       now.day, now.hour, now.minute, now.second + secondsToAdd);
-  //   // if (scheduledDate.isBefore(now)) {
-  //   //   print("SCHEDULE DATE IS IN PASTE");
-  //   //   scheduledDate = scheduledDate.add(const Duration(days: 1));
-  //   // }
-  //   print("NOTIFICATION SCHEDULED AT: $scheduledDate");
-  //   return scheduledDate;
-  // }
+
+  var secondsToAdd = 0;
+
+  tz.TZDateTime _nextInstanceOfTenAM() {
+    secondsToAdd += 2;
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,
+        now.day, now.hour, now.minute, now.second + secondsToAdd);
+    // if (scheduledDate.isBefore(now)) {
+    //   print("SCHEDULE DATE IS IN PASTE");
+    //   scheduledDate = scheduledDate.add(const Duration(days: 1));
+    // }
+    print("NOTIFICATION SCHEDULED AT: $scheduledDate");
+    return scheduledDate;
+  }
 
   void onExportDataClicked(BuildContext context) {
     Navigator.of(context).push(

@@ -25,10 +25,11 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
   YesOrNo? isPhysicalHungary = null;
 
   List<String> get _options {
-    return ["Very Hungary", "A Little Hungary", "Hungary"];
+    return ["Very Hungry", "A Little Hungry", "Hungry"];
   }
 
   late String selectedValue;
+
   // Database? database;
 
   @override
@@ -59,7 +60,8 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
       kSizedBox10,
       kSizedBox10,
       kSizedBox10,
-      Text("Am I experiencing any Physical Hunger?", style: kQuestionTextStyle),
+      const Text("Am I experiencing any Physical Hunger?",
+          style: kQuestionTextStyle),
       kSizedBox10,
       kSizedBox10,
       ListTile(
@@ -150,7 +152,6 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
       return;
     }
 
-
     widget.record?.is_physical_hunger = isPhysicalHungary?.toShortString();
     widget.record?.is_physical_hunger_option = selectedValue;
 
@@ -168,7 +169,7 @@ class _PhysicalHungerState extends State<PhysicalHunger> {
 
     // print("INSERTION INT: $result");
 
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => EatenScreen(widget.record)));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => EatenScreen(widget.record)));
   }
 }

@@ -7,9 +7,9 @@ import 'package:flutter_mindful_recovery/ui/screens/2. TimeAndDateScreen.dart';
 import 'package:flutter_mindful_recovery/ui/screens/MainScreen.dart';
 import 'package:flutter_mindful_recovery/ui/screens/SplashScreen.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
 
 int id = 0;
 
@@ -46,16 +46,18 @@ String portName = 'notification_send_port';
 String? selectedNotificationPayload;
 
 /// A notification action which triggers a url launch event
-String urlLaunchActionId = 'id_1';
+// String urlLaunchActionId = 'id_1';
 
 /// A notification action which triggers a App navigation event
 String navigationActionId = 'id_3';
 
 /// Defines a iOS/MacOS notification category for text input actions.
-String darwinNotificationCategoryText = 'textCategory';
+// String darwinNotificationCategoryText = 'textCategory';
 
 /// Defines a iOS/MacOS notification category for plain actions.
-String darwinNotificationCategoryPlain = 'plainCategory';
+// String darwinNotificationCategoryPlain = 'plainCategory';
+
+
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
@@ -72,12 +74,12 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
 
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
-  final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timeZoneName!));
 }
 
 //https://stackoverflow.com/a/70465757/9995125 This can be a good resource to try
-Future<void> main() async {
+Future<void>main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();
 
@@ -87,93 +89,82 @@ Future<void> main() async {
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');
-
-  final List<DarwinNotificationCategory> darwinNotificationCategories =
-      <DarwinNotificationCategory>[
-    DarwinNotificationCategory(
-      darwinNotificationCategoryText,
-      actions: <DarwinNotificationAction>[
-        DarwinNotificationAction.text(
-          'text_1',
-          'Action 1',
-          buttonTitle: 'Send',
-          placeholder: 'Placeholder',
-        ),
-      ],
-    ),
-    DarwinNotificationCategory(
-      darwinNotificationCategoryPlain,
-      actions: <DarwinNotificationAction>[
-        DarwinNotificationAction.plain('id_1', 'Action 1'),
-        DarwinNotificationAction.plain(
-          'id_2',
-          'Action 2 (destructive)',
-          options: <DarwinNotificationActionOption>{
-            DarwinNotificationActionOption.destructive,
-          },
-        ),
-        DarwinNotificationAction.plain(
-          navigationActionId,
-          'Action 3 (foreground)',
-          options: <DarwinNotificationActionOption>{
-            DarwinNotificationActionOption.foreground,
-          },
-        ),
-        DarwinNotificationAction.plain(
-          'id_4',
-          'Action 4 (auth required)',
-          options: <DarwinNotificationActionOption>{
-            DarwinNotificationActionOption.authenticationRequired,
-          },
-        ),
-      ],
-      options: <DarwinNotificationCategoryOption>{
-        DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
-      },
-    )
-  ];
+  //
+  // final List<DarwinNotificationCategory> darwinNotificationCategories =
+  //     <DarwinNotificationCategory>[
+  //   DarwinNotificationCategory(
+  //     darwinNotificationCategoryText,
+  //     actions: <DarwinNotificationAction>[
+  //       DarwinNotificationAction.text(
+  //         'text_1',
+  //         'Action 1',
+  //         buttonTitle: 'Send',
+  //         placeholder: 'Placeholder',
+  //       ),
+  //     ],
+  //   ),
+  //   DarwinNotificationCategory(
+  //     darwinNotificationCategoryPlain,
+  //     actions: <DarwinNotificationAction>[
+  //       DarwinNotificationAction.plain('id_1', 'Action 1'),
+  //       DarwinNotificationAction.plain(
+  //         'id_2',
+  //         'Action 2 (destructive)',
+  //         options: <DarwinNotificationActionOption>{
+  //           DarwinNotificationActionOption.destructive,
+  //         },
+  //       ),
+  //       DarwinNotificationAction.plain(
+  //         navigationActionId,
+  //         'Action 3 (foreground)',
+  //         options: <DarwinNotificationActionOption>{
+  //           DarwinNotificationActionOption.foreground,
+  //         },
+  //       ),
+  //       DarwinNotificationAction.plain(
+  //         'id_4',
+  //         'Action 4 (auth required)',
+  //         options: <DarwinNotificationActionOption>{
+  //           DarwinNotificationActionOption.authenticationRequired,
+  //         },
+  //       ),
+  //     ],
+  //     options: <DarwinNotificationCategoryOption>{
+  //       DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+  //     },
+  //   )
+  // ];
 
   /// Note: permissions aren't requested here just to demonstrate that can be
   /// done later
-  final DarwinInitializationSettings initializationSettingsDarwin =
-      DarwinInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false,
-    onDidReceiveLocalNotification:
-        (int id, String? title, String? body, String? payload) async {
-      didReceiveLocalNotificationStream.add(
-        ReceivedNotification(
-          id: id,
-          title: title,
-          body: body,
-          payload: payload,
-        ),
-      );
-    },
-    notificationCategories: darwinNotificationCategories,
-  );
-  final InitializationSettings initializationSettings = InitializationSettings(
+  // final DarwinInitializationSettings initializationSettingsDarwin =
+  //     DarwinInitializationSettings(
+  //   requestAlertPermission: false,
+  //   requestBadgePermission: false,
+  //   requestSoundPermission: false,
+  //   onDidReceiveLocalNotification:
+  //       (int id, String? title, String? body, String? payload) async {
+  //     didReceiveLocalNotificationStream.add(
+  //       ReceivedNotification(
+  //         id: id,
+  //         title: title,
+  //         body: body,
+  //         payload: payload,
+  //       ),
+  //     );
+  //   },
+  //   notificationCategories: darwinNotificationCategories,
+  // );
+  const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
-    iOS: initializationSettingsDarwin,
-    macOS: initializationSettingsDarwin,
+    // iOS: initializationSettingsDarwin,
+    // macOS: initializationSettingsDarwin,
   );
-
-  await flutterLocalNotificationsPlugin.initialize(
+  //
+  flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse:
-        (NotificationResponse notificationResponse) {
-      switch (notificationResponse.notificationResponseType) {
-        case NotificationResponseType.selectedNotification:
-          selectNotificationStream.add(notificationResponse.payload);
-          break;
-        case NotificationResponseType.selectedNotificationAction:
-          if (notificationResponse.actionId == navigationActionId) {
-            selectNotificationStream.add(notificationResponse.payload);
-          }
-          break;
-      }
-    },
+        (NotificationResponse notificationResponse) {},
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
   );
 
@@ -194,40 +185,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
-  bool? newLaunch;
-  late SharedPreferences prefs;
-
-  @override
-  void initState() {
-    super.initState();
-    loadNewLaunch();
-  }
-
-  loadNewLaunch() async {
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      bool _newLaunch = ((prefs.getBool('newLaunch') ?? true));
-      print("newLaunch:");
-      print(_newLaunch);
-      newLaunch = _newLaunch;
-    });
-  }
-
-  Widget _firstScreen() {
-    if (newLaunch == false) {
-      return MainScreen();
-    } else {
-      return const SplashScreen();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       routes: {
-        '/main': (BuildContext context) => MainScreen(),
-        '/first': (BuildContext context) => TimeAndDateScreen()
+        MainScreen.routeName: (BuildContext context) => const MainScreen(),
+        TimeAndDateScreen.routeName: (BuildContext context) =>
+            const TimeAndDateScreen()
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -251,7 +216,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: _firstScreen(),
+      home: const SplashScreen(),
       // home: FutureBuilder(
       //   future: SharedPreferences.getInstance(),
       //   builder: (context, snapshot) {

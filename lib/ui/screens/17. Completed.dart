@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
+import 'package:flutter_mindful_recovery/ui/screens/MainScreen.dart';
 import 'package:flutter_mindful_recovery/ui/widgets/container/MainContainer.dart';
 
 import '../widgets/FilledRoundCornerButton.dart';
@@ -60,6 +61,6 @@ class CompletedScreen extends StatelessWidget {
   }
 
   void _continueClicked(BuildContext context) {
-    Navigator.popUntil(context, ModalRoute.withName("/main"));
+    Navigator.popUntil(context, ModalRoute.withName(MainScreen.routeName));
   }
 }

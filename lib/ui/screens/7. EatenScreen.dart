@@ -55,7 +55,8 @@ class _EatenScreenState extends State<EatenScreen> {
       ),
       kSizedBox10,
       kSizedBox10,
-      Text("Was it an abstinent meal?", style: kQuestionTextStyle),
+      if(isEaten==YesOrNo.YES)
+      ...[Text("Was it an abstinent meal?", style: kQuestionTextStyle),
       kSizedBox10,
       kSizedBox10,
       ListTile(
@@ -79,7 +80,7 @@ class _EatenScreenState extends State<EatenScreen> {
           groupValue: isAbstinentMeal,
           onChanged: onRadioChanged2,
         ),
-      ),
+      ),],
       Spacer(),
       MyFilledRoundCornerButton(
         label: "Continue",
@@ -104,12 +105,13 @@ class _EatenScreenState extends State<EatenScreen> {
   }
 
   void _continueClicked() {
-    if (isEaten == null || isAbstinentMeal == null) {
-      Fluttertoast.showToast(
-        msg: "Please answer all questions",
-        toastLength: Toast.LENGTH_SHORT,
-        backgroundColor: Colors.red,
-      );
+    if (isEaten == null ) {
+      showErrorToast();
+      return;
+    }
+
+    if(isEaten==YesOrNo.YES && isAbstinentMeal==null){
+      showErrorToast();
       return;
     }
 
@@ -119,5 +121,13 @@ class _EatenScreenState extends State<EatenScreen> {
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => DrinkScreen(widget.record)));
+  }
+
+  void showErrorNotification(){
+    Fluttertoast.showToast(
+      msg: "Please answer all questions",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.red,
+    );
   }
 }
