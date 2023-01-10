@@ -29,7 +29,7 @@ class _FoodAddictState extends State<FoodAddict> {
       kSizedBox10,
       kSizedBox10,
       const Text(
-          "As a food addict/compulsive overeaten, we focus on food for fuel and nutrition, and nothing else. Will eating, binging, purging, or restricting food satisfy my emotional needs right now? ", style: kQuestionTextStyle),
+          "As a food addict/compulsive overeater, we focus on food for fuel and nutrition, and nothing else. Will eating, binging, purging, or restricting food satisfy my emotional needs right now? ", style: kQuestionTextStyle),
       kSizedBox10,
       ListTile(
         onTap: () {
