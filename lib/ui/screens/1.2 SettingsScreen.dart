@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_mindful_recovery/ui/const/Constants.dart';
@@ -178,18 +180,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     print("INTERVAL : $interval\tSelected Options: $_selectedOption");
 
     sharedPreferences.setInt(TIME_OPTION_KEY, _selectedOption);
-
-
-    if (interval == null){
-      flutterLocalNotificationsPlugin.cancelAll();
-    }else {
-      flutterLocalNotificationsPlugin.periodicallyShow(
-          123,
-          "Mindful Recovery",
-          "Time to Record new data.",
-          interval,
-          notificationDetails);
-    }
+    flutterLocalNotificationsPlugin.periodicallyShow(
+        Random().nextInt(1000),
+        "Mindful Recovery",
+        "Time to Record new data.asdasdsa",
+        RepeatInterval.every5Minues,
+        notificationDetails);
+    //
+    // if (interval == null){
+    //   flutterLocalNotificationsPlugin.cancelAll();
+    // }else {
+    //
+    // }
 
     Navigator.of(context).pop();
 
@@ -206,7 +208,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return RepeatInterval.every5Minues;
       case 10:
       //10 minutes
-        return RepeatInterval.every10Minues;
+        return RepeatInterval.hourly;
       case 15:
       //15 minutes
         return RepeatInterval.every15Minutes;
@@ -234,9 +236,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case 55:
       //50 minutes
         return RepeatInterval.every55Minutes;
-      case 60:
-      //55 minutes
-        return RepeatInterval.hourly;
+      // case 60:
+      // 55 minutes
+      //   return RepeatInterval.hourly;
       default:
         return null;
     }

@@ -1,4 +1,5 @@
-import 'dart:math';
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -26,10 +27,58 @@ class _MainScreenState extends State<MainScreen> {
   Record record = Record();
 
   // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  bool _notificationsEnabled = false;
 
   @override
   void initState() {
     // flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    _isAndroidPermissionGranted();
+    _requestPermissions();
+  }
+
+
+  Future<void> _isAndroidPermissionGranted() async {
+    if (Platform.isAndroid) {
+      final bool granted = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.areNotificationsEnabled() ??
+          false;
+
+      setState(() {
+        _notificationsEnabled = granted;
+      });
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          MacOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+
+      final bool? granted = await androidImplementation?.requestPermission();
+      setState(() {
+        _notificationsEnabled = granted ?? false;
+      });
+    }
   }
 
   @override
@@ -124,14 +173,16 @@ class _MainScreenState extends State<MainScreen> {
     // Navigator.of(context).push(MaterialPageRoute(
     //     builder: (context) => ViewDataSelectionScreen(false)));
 
-    var notificationDetails = const NotificationDetails(
-      android: AndroidNotificationDetails(
-          'daily notification channel id', 'daily notification channel name',
-          channelDescription: 'daily notification description'),
-    );
+    const AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails('your channel id', 'your channel name',
+        channelDescription: 'your channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker');
+    const NotificationDetails notificationDetails =
+    NotificationDetails(android: androidNotificationDetails);
 
-    flutterLocalNotificationsPlugin.periodicallyShow(
-        123, "30 Sec Notification", "body", RepeatInterval.every10Minues, notificationDetails);
+    flutterLocalNotificationsPlugin.show(21, "title", "body",notificationDetails, payload: 'item x');
 
   }
 
